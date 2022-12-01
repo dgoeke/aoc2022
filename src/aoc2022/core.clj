@@ -3,18 +3,17 @@
             [clojure.string :as str])
   (:gen-class))
 
-(def day
-  (memoize
-    (fn [^Integer n]
-      (->> (format "day%d.txt" n)
-           io/resource
-           slurp
-           str/trim))))
+(defn- load-resource [filename]
+  (some->> filename io/resource slurp str/trim))
 
-(def sample
-  (memoize
-    (fn [^Integer n]
-      (->> (format "day%d-sample.txt" n)
-           io/resource
-           slurp
-           str/trim))))
+(defn day
+  "Load input data from resources directory. Returns `nil`
+   if file does not exist, or a string if it does.
+    (day 1)                => day1.txt
+    (day 1 :sample)        => day1-sample.txt
+    (day 2 :sample :part2) => day2-sample-part2.txt"
+  [n & args]
+  (load-resource
+    (str (str/join "-" (cons (str "day" n)
+                             (map name args)))
+         ".txt")))
