@@ -4,7 +4,7 @@
   (:gen-class))
 
 (defn- load-resource [filename]
-  (some->> filename io/resource slurp str/trim))
+  (some->> filename io/resource slurp))
 
 (defn day
   "Load input data from resources directory. Returns `nil`
